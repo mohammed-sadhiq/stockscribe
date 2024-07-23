@@ -6,7 +6,7 @@ const App: React.FC = () => {
   return (
     <div className="app">
       <header>
-        <h1>$tocksScriber</h1>
+        <h1>$tocksScribe</h1>
       </header>
       <main>
         <ArticlesList />

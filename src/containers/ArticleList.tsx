@@ -1,14 +1,14 @@
-// src/containers/ArticlesList.tsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ArticleCard from '../components/ArticleCard';
+import Pagination from '../components/Pagination';
 import Filters from '../components/Filters';
 import Loader from '../components/Loader';
-import Pagination from '../components/Pagination';
+import '../assets/styles/articlelist.scss'
 
 const ArticlesList: React.FC = () => {
-  const [articles, setArticles] = useState([]);
-  const [filteredArticles, setFilteredArticles] = useState([]);
+  const [articles, setArticles]:any[] = useState([]);
+  const [filteredArticles, setFilteredArticles]:any[] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories]:any[] = useState([]);
@@ -58,40 +58,42 @@ const ArticlesList: React.FC = () => {
   const currentArticles = filteredArticles.slice(indexOfFirstArticle, indexOfLastArticle);
 
   return (
-    <div className="articles-list">
-      <>
-      <Filters 
-        categories={categories}
-        authors={authors}
-        onCategoryChange={handleCategoryChange}
-        onAuthorChange={handleAuthorChange}
-        onSortChange={handleSortChange}
-      />
-      </>
-      <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className="articles">
-          {currentArticles.map((article: any) => (
-            <ArticleCard 
-              key={article.id}
-              title={article.title}
-              date={article.date}
-              author={article.author}
-              category={article.category}
-              description={article.description}
-              image={article.image}
+    <div className="articles-list-container">
+      <div className="filters-container">
+        <Filters 
+          categories={categories}
+          authors={authors}
+          onCategoryChange={handleCategoryChange}
+          onAuthorChange={handleAuthorChange}
+          onSortChange={handleSortChange}
+        />
+      </div>
+      <div className="articles-container">
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            <div className="articles">
+              {currentArticles.map((article: any) => (
+                <ArticleCard 
+                  key={article.id}
+                  title={article.title}
+                  date={article.date}
+                  author={article.author}
+                  category={article.category}
+                  description={article.description}
+                  image={article.image}
+                />
+              ))}
+            </div>
+            <Pagination 
+              currentPage={currentPage}
+              totalPages={Math.ceil(filteredArticles.length / articlesPerPage)}
+              onPageChange={handlePageChange}
             />
-          ))}
-        </div>
-      )}
-      <Pagination 
-        currentPage={currentPage}
-        totalPages={Math.ceil(filteredArticles.length / articlesPerPage)}
-        onPageChange={handlePageChange}
-      />
-      </>  
+          </>
+        )}
+      </div>
     </div>
   );
 };

@@ -11,9 +11,12 @@ interface ArticleCardProps {
 }
 
 const ArticleCard: React.FC<ArticleCardProps> = ({ title, date, author, category, description, image }) => {
+
+  const baseUrl = `https://dummy-rest-api.specbee.site`
+  
   return (
     <div className="article-card">
-      <img src={image} alt={title} className="article-image" />
+      <img src={`${baseUrl}/${image}`} alt={title} className="article-image" />
       <div className="article-details">
         <h2>{title}</h2>
         <p>{date}</p>
