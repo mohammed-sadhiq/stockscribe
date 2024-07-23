@@ -39,6 +39,7 @@ body {
   .filters {
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
     margin-bottom: 20px;
   
     .filter-category, .filter-author, .filter-sort {

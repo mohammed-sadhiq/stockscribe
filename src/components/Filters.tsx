@@ -10,6 +10,7 @@ interface FiltersProps {
 }
 
 const Filters: React.FC<FiltersProps> = ({ categories, authors, onCategoryChange, onAuthorChange, onSortChange }) => {
+  console.log("categories in filters",categories)
   return (
     <div className="filters">
       <div className="filter-category">

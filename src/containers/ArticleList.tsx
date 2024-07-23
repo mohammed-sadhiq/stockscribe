@@ -6,28 +6,42 @@ import Filters from '../components/Filters';
 import Loader from '../components/Loader';
 import '../assets/styles/articlelist.scss'
 
+interface Article {
+  id: string;
+  title: string;
+  date: string;
+  author: string;
+  source: string;
+  description: string;
+  image: string;
+}
+
 const ArticlesList: React.FC = () => {
-  const [articles, setArticles]:any[] = useState([]);
-  const [filteredArticles, setFilteredArticles]:any[] = useState([]);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
+  const [currentArticles, setCurrentArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [categories, setCategories]:any[] = useState([]);
-  const [authors, setAuthors]:any[] = useState([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [authors, setAuthors] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
 
   const articlesPerPage = 5;
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await axios.get('https://dummy-rest-api.specbee.site/api/v1/news');
+        const response = await axios.get<Article[]>('https://dummy-rest-api.specbee.site/api/v1/news');
+        console.log("response data",response.data)
         setArticles(response.data);
         setFilteredArticles(response.data);
         setLoading(false);
 
         // Extract categories and authors from articles
-        const categories = Array.from(new Set(response.data.map((article: any) => article.category)));
+        const categories = Array.from(new Set(response.data.map((article: Article) => article.source)));
         setCategories(categories);
-        const authors = Array.from(new Set(response.data.map((article: any) => article.author)));
+        const authors = Array.from(new Set(response.data.map((article: Article) => article.author)));
         setAuthors(authors);
       } catch (error) {
         console.error('Error fetching articles:', error);
@@ -37,29 +51,67 @@ const ArticlesList: React.FC = () => {
     fetchArticles();
   }, []);
 
+  useEffect(() => {
+    console.log("categories changed useeffect")
+    filterArticles();
+  }, [selectedCategories,selectedAuthors, articles]);
+
+  useEffect(() => {
+    updateCurrentArticles();
+  }, [filteredArticles, currentPage]);
+
+  useEffect(()=>{
+  },[currentArticles])
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   const handleCategoryChange = (category: string) => {
-    // Implement category filter logic
+    setSelectedCategories(prev =>
+      prev.includes(category)
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    );
   };
 
   const handleAuthorChange = (author: string) => {
-    // Implement author filter logic
+    setSelectedAuthors(prev =>
+      prev.includes(author)
+        ? prev.filter(a => a !== author)
+        : [...prev, author]
+    );
   };
 
   const handleSortChange = (sort: string) => {
     // Implement sort logic
   };
 
-  const indexOfLastArticle = currentPage * articlesPerPage;
-  const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
-  const currentArticles = filteredArticles.slice(indexOfFirstArticle, indexOfLastArticle);
+  const filterArticles = () => {
+    let filtered = articles;
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(article =>
+        selectedCategories.includes(article.source)
+      );
+    }
+    if (selectedAuthors.length > 0) {
+      filtered = filtered.filter(article =>
+        selectedAuthors.includes(article.author)
+      );
+    }
+    setFilteredArticles(filtered);
+
+  };
+
+  const updateCurrentArticles = () => {
+    const indexOfLastArticle = currentPage * articlesPerPage;
+    const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
+    setCurrentArticles(filteredArticles.slice(indexOfFirstArticle, indexOfLastArticle));
+  };
 
   return (
-    <div className="articles-list-container">
-      <div className="filters-container">
+    <div className="articles-list-layout">
+      <div className="filters-sidebar">
         <Filters 
           categories={categories}
           authors={authors}
@@ -68,19 +120,19 @@ const ArticlesList: React.FC = () => {
           onSortChange={handleSortChange}
         />
       </div>
-      <div className="articles-container">
+      <div className="articles-main">
         {loading ? (
           <Loader />
         ) : (
           <>
             <div className="articles">
-              {currentArticles.map((article: any) => (
+              {currentArticles.map((article: Article) => (
                 <ArticleCard 
                   key={article.id}
                   title={article.title}
                   date={article.date}
                   author={article.author}
-                  category={article.category}
+                  category={article.source}
                   description={article.description}
                   image={article.image}
                 />
