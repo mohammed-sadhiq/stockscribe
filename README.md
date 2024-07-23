@@ -1,46 +1,73 @@
-# Getting Started with Create React App
+# $tocksScriber Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a React application that displays a list of articles with filtering and sorting capabilities. Users can filter articles by categories and authors, and sort them by date or title.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Fetch articles from a remote API.
+- Display articles with pagination.
+- Filter articles by categories and authors.
+- Sort articles by date (earliest to latest or latest to earliest) and title (ascending or descending order).
+- Responsive design with a sidebar for filters.
 
-### `npm start`
+## Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- React
+- TypeScript
+- Axios
+- SCSS
+- React Hooks
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Getting Started
 
-### `npm test`
+Follow these instructions to get a copy of the project up and running on your local machine.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `npm run build`
+- Node.js and npm installed on your machine.
+- Basic understanding of React and TypeScript.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/mohammed-sadhiq/stockscribe.git
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2.	Navigate to the project directory:
+    ```bash
+    cd stockscribe
 
-### `npm run eject`
+3.	Install the dependencies:
+    ```bash
+    npm install
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Running the Application
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1.	Start the development server:
+    ```bash
+    npm start
+2.	Open your browser and go to http://localhost:3000.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Components
 
-## Learn More
+	*	ArticleCard: Displays individual article details.
+	*	Filters: Provides UI for filtering articles by categories and authors, and sorting them.
+	*	Loader: Displays a loading spinner while fetching data.
+	*	Pagination: Provides pagination controls.
+    *   Upon clicking on ArticleCard, it leads to news article in new tab
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Containers
+
+	*	ArticlesList: Main container component that fetches data, handles filtering and sorting, and manages pagination.
+
+
+API
+
+The application fetches articles from a remote API. The API endpoint used is:
+        https://dummy-rest-api.specbee.site/api/v1/news
+
+SCSS
+
+    The styles for the application are located in src/assets/styles/articlelist.scss.
