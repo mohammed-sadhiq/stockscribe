@@ -1,4 +1,3 @@
-// src/components/Filters.tsx
 import React from 'react';
 
 interface FiltersProps {
@@ -10,7 +9,6 @@ interface FiltersProps {
 }
 
 const Filters: React.FC<FiltersProps> = ({ categories, authors, onCategoryChange, onAuthorChange, onSortChange }) => {
-  console.log("categories in filters",categories)
   return (
     <div className="filters">
       <div className="filter-category">
@@ -34,8 +32,8 @@ const Filters: React.FC<FiltersProps> = ({ categories, authors, onCategoryChange
       <div className="filter-sort">
         <h4>Sort By</h4>
         <select onChange={e => onSortChange(e.target.value)}>
-          <option value="date_desc">Date (Latest)</option>
-          <option value="date_asc">Date (Earliest)</option>
+          <option value="date_desc">Date (Latest to Earliest)</option>
+          <option value="date_asc">Date (Earliest to Latest)</option>
           <option value="title_asc">Title (A-Z)</option>
           <option value="title_desc">Title (Z-A)</option>
         </select>

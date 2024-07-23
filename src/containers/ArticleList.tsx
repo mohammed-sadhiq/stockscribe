@@ -4,7 +4,7 @@ import ArticleCard from '../components/ArticleCard';
 import Pagination from '../components/Pagination';
 import Filters from '../components/Filters';
 import Loader from '../components/Loader';
-import '../assets/styles/articlelist.scss'
+import '../assets/styles/articlelist.scss';
 
 interface Article {
   id: string;
@@ -14,6 +14,7 @@ interface Article {
   source: string;
   description: string;
   image: string;
+  url:string;
 }
 
 const ArticlesList: React.FC = () => {
@@ -26,6 +27,7 @@ const ArticlesList: React.FC = () => {
   const [authors, setAuthors] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
+  const [sortOption, setSortOption] = useState<string>('date_desc');
 
   const articlesPerPage = 5;
 
@@ -33,7 +35,6 @@ const ArticlesList: React.FC = () => {
     const fetchArticles = async () => {
       try {
         const response = await axios.get<Article[]>('https://dummy-rest-api.specbee.site/api/v1/news');
-        console.log("response data",response.data)
         setArticles(response.data);
         setFilteredArticles(response.data);
         setLoading(false);
@@ -52,16 +53,12 @@ const ArticlesList: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log("categories changed useeffect")
-    filterArticles();
-  }, [selectedCategories,selectedAuthors, articles]);
+    filterAndSortArticles();
+  }, [selectedCategories, selectedAuthors, articles, sortOption]);
 
   useEffect(() => {
     updateCurrentArticles();
   }, [filteredArticles, currentPage]);
-
-  useEffect(()=>{
-  },[currentArticles])
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -84,10 +81,10 @@ const ArticlesList: React.FC = () => {
   };
 
   const handleSortChange = (sort: string) => {
-    // Implement sort logic
+    setSortOption(sort);
   };
 
-  const filterArticles = () => {
+  const filterAndSortArticles = () => {
     let filtered = articles;
     if (selectedCategories.length > 0) {
       filtered = filtered.filter(article =>
@@ -100,7 +97,33 @@ const ArticlesList: React.FC = () => {
       );
     }
     setFilteredArticles(filtered);
-
+    console.log("sortOption",sortOption)
+    switch (sortOption) {
+      case 'date_asc':
+        console.log("date_asc")
+     //   filtered.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+     setFilteredArticles(prevState=>[...prevState].sort((a,b)=>new Date(a.date).getTime() - new Date(b.date).getTime()))
+        return;
+      case 'date_desc':
+        console.log("date_desc")
+       // filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+       setFilteredArticles(prevState=>[...prevState].sort((a,b)=>new Date(b.date).getTime() - new Date(a.date).getTime()))
+        return;
+      case 'title_asc':
+        console.log("title_asc")
+        //filtered.sort((a, b) => a.title.localeCompare(b.title));
+        setFilteredArticles(prevState=>[...prevState].sort((a,b)=>a.title.localeCompare(b.title)))
+        return;
+      case 'title_desc':
+        console.log("title_desc")
+      //  filtered.sort((a, b) => b.title.localeCompare(a.title));
+      setFilteredArticles(prevState=>[...prevState].sort((a,b)=>a.title.localeCompare(a.title)))
+        return;
+      default:
+        break;
+    }
+    
+    setFilteredArticles(filtered);
   };
 
   const updateCurrentArticles = () => {
@@ -128,6 +151,7 @@ const ArticlesList: React.FC = () => {
             <div className="articles">
               {currentArticles.map((article: Article) => (
                 <ArticleCard 
+                  url ={article.url}
                   key={article.id}
                   title={article.title}
                   date={article.date}
