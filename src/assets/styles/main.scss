@@ -1,0 +1,133 @@
+// src/assets/styles/main.scss
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+  }
+  
+  .app {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  
+    @media (max-width: 768px) {
+      padding: 10px;
+    }
+  }
+  
+  header {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+  
+    @media (max-width: 768px) {
+      padding: 10px;
+    }
+  }
+  
+  .articles-list {
+    display: flex;
+    flex-direction: column;
+  
+    @media (max-width: 768px) {
+      padding: 0;
+    }
+  }
+  
+  .filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  
+    .filter-category, .filter-author, .filter-sort {
+      display: flex;
+      flex-direction: column;
+      flex-basis: 30%;
+  
+      @media (max-width: 768px) {
+        flex-basis: 100%;
+      }
+    }
+  
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+  }
+  
+  .article-card {
+    display: flex;
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+  
+    .article-image {
+      width: 150px;
+      height: 150px;
+      margin-right: 20px;
+  
+      @media (max-width: 768px) {
+        width: 100px;
+        height: 100px;
+        margin-right: 10px;
+      }
+    }
+  
+    .article-details {
+      h2 {
+        margin: 0 0 10px;
+  
+        @media (max-width: 768px) {
+          font-size: 1.2em;
+        }
+      }
+  
+      p {
+        margin: 5px 0;
+  
+        @media (max-width: 768px) {
+          font-size: 0.9em;
+        }
+      }
+    }
+  
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  
+    button {
+      margin: 0 5px;
+      padding: 10px 20px;
+      border: none;
+      background-color: #333;
+      color: white;
+      cursor: pointer;
+  
+      &.active {
+        background-color: #666;
+      }
+  
+      &:hover {
+        background-color: #555;
+      }
+  
+      @media (max-width: 768px) {
+        padding: 5px 10px;
+        margin: 0 2px;
+      }
+    }
+  }
+  
+  .loader {
+    text-align: center;
+    font-size: 24px;
+  }
